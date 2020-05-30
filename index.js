@@ -18,11 +18,14 @@ async function displayBooks(e) {
     image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
     image.setAttribute("class", "cover");
     let bookCard = document.createElement("div");
-    bookCard.setAttribute("class", `book-card`);
     let inputParent = document.querySelector(`.book-input__${e.target.id}`);
     bookCard.appendChild(title);
     bookCard.appendChild(author);
     bookCard.appendChild(image);
     inputParent.appendChild(bookCard);
+    bookCard.setAttribute("class", "book-card");
+    setTimeout(() => {
+      bookCard.setAttribute("class", `book-card--active`);
+    }, 10);
   }
 }
