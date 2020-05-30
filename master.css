@@ -1,0 +1,23 @@
+body {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  background-color: rgb(43, 57, 68);
+  color: rgb(152, 163, 163);
+}
+
+.book-input {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+input {
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  border-bottom: 3px maroon solid;
+}
+
+input:focus {
+  border-bottom: 3px rgb(152, 163, 163) solid;
+  transition: 0.5s ease;
+}
