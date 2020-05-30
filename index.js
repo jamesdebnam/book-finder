@@ -6,8 +6,7 @@ input.forEach((item) => item.addEventListener("change", displayBooks));
 
 async function displayBooks(e) {
   let bookArray = await bookPredict.getBookArray(e.target.value);
-  console.log(e);
-  console.log(bookArray);
+
   for (let i = 0; i < 3; i++) {
     let title = document.createElement("p");
     title.setAttribute("class", `title title-${i}`);

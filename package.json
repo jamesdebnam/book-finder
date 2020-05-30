@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/jamesdebnam/book-finder#readme",
   "devDependencies": {
+    "tap-simple": "^0.3.1",
+    "tap-spec": "^5.0.0",
     "tape": "^5.0.1"
   }
 }

@@ -14,18 +14,28 @@ test("bookPredictGet should return a successful network request", (t) => {
   t.end();
 });
 
-test("getBookArray should return an array", (t) => {
-  let actual = Object.prototype.toString.call(
-    bookPredict.getBookArray("harry")
-  );
-  let expected = "[object Array]";
-  t.equal(actual, expected);
+test("getBookArray should return an array", async (t) => {
+  t.plan(1);
+  try {
+    let returnVal = await bookPredict.getBookArray("harry");
+    let actual = Object.prototype.toString.call(returnVal);
+    let expected = "[object Array]";
+    t.equal(actual, expected);
+  } catch (e) {
+    t.fail("fail");
+  }
   t.end();
 });
 
-// test("getBookArray should return an array with 3 items", (t) => {
-//   let actual = bookPredict.getBookArray("harry").length;
-//   let expected = 3;
-//   t.equal(actual, expected);
-//   t.end();
-// });
+test("getBookArray should return an array with 3 items", async (t) => {
+  t.plan(1);
+  try {
+    let returnVal = await bookPredict.getBookArray("harry");
+    let actual = returnVal.length;
+    let expected = 3;
+    t.equal(actual, expected);
+  } catch (e) {
+    t.fail("fail");
+  }
+  t.end();
+});
