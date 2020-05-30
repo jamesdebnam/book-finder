@@ -1,17 +1,25 @@
-const axios = require("axios");
-const beefy = require("beefy");
-const http = require("http");
+const bookPredict = require("./components/bookPredictGet.js");
 
-async function bookPredictGet(text) {
-  let reply = await axios.get("https://www.googleapis.com/books/v1/volumes", {
-    params: {
-      q: text,
-    },
-  });
-  console.log("sdfsd");
+const input = document.querySelectorAll("input");
+console.log(input);
+input.forEach((item) => item.addEventListener("change", displayBooks));
+
+async function displayBooks(e) {
+  let bookArray = await bookPredict.getBookArray(e.target.value);
+  console.log(e);
+  console.log(bookArray);
+  for (let i = 0; i < 3; i++) {
+    let title = document.createElement("p");
+    title.setAttribute("class", `title title-${i}`);
+    title.innerHTML = bookArray[i].title;
+    let author = document.createElement("p");
+    author.setAttribute("class", `author author-${i}`);
+    author.innerHTML = bookArray[i].authors[0];
+    let image = document.createElement("img");
+    image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
+    let parent = document.querySelector(`.book-input__${e.target.id}`);
+    parent.appendChild(title);
+    parent.appendChild(author);
+    parent.appendChild(image);
+  }
 }
-const GOOGLEAPI = "AIzaSyCcamJ9cxaZx_NCU4RsG0SdJz1MZyi23GA";
-
-console.log(bookPredictGet("catcher"));
-
-module.exports = bookPredictGet;

@@ -1,0 +1,23 @@
+{
+  "name": "bookfinderproj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./tests/test.js",
+    "build": "browserify index.js -o bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesdebnam/book-finder.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesdebnam/book-finder/issues"
+  },
+  "homepage": "https://github.com/jamesdebnam/book-finder#readme",
+  "devDependencies": {
+    "tape": "^5.0.1"
+  }
+}
