@@ -16,9 +16,13 @@ async function displayBooks(e) {
     author.innerHTML = bookArray[i].authors[0];
     let image = document.createElement("img");
     image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
-    let parent = document.querySelector(`.book-input__${e.target.id}`);
-    parent.appendChild(title);
-    parent.appendChild(author);
-    parent.appendChild(image);
+    image.setAttribute("class", "cover");
+    let bookCard = document.createElement("div");
+    bookCard.setAttribute("class", `book-card`);
+    let inputParent = document.querySelector(`.book-input__${e.target.id}`);
+    bookCard.appendChild(title);
+    bookCard.appendChild(author);
+    bookCard.appendChild(image);
+    inputParent.appendChild(bookCard);
   }
 }
