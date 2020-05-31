@@ -16,6 +16,7 @@ input {
   background-color: inherit;
   border: none;
   border-bottom: 3px maroon solid;
+  margin-inline: 100px;
 }
 
 input:focus {
@@ -79,4 +80,16 @@ input:focus {
   box-shadow: inset 0px 0px 12px 0px rgba(43, 57, 68, 0.47);
   overflow-y: hidden;
   transition: all 0.9s ease;
+}
+
+.book-card--selected {
+  background-color: rgba(177, 204, 211, 1);
+}
+
+.book-card--active:hover {
+  background-color: rgba(177, 204, 211, 1);
+}
+
+.book-card--active > * {
+  pointer-events: none;
 }
