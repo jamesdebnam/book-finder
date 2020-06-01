@@ -1,5 +1,6 @@
 const bookPredict = require("./components/bookPredictGet.js");
-
+const bookRecommend = require("./components/bookRecommend.js");
+// const button = require("./components/button.js")
 const input = document.querySelectorAll("input");
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
@@ -50,7 +51,7 @@ async function displayBooks(e) {
 function selectBook(e) {
   let bookList = e.target.parentElement.childNodes;
   //First sets all the unselected cards as book-card to enable animation
-  for (let i = 0; i < bookList.length; i++) {
+  for (let i = 0; i < 3; i++) {
     if (bookList[i].className !== e.target.className) {
       bookList[i].className = "book-card";
     }
@@ -60,6 +61,7 @@ function selectBook(e) {
     for (let i = 0; i < bookList.length; i++) {
       if (bookList[i].className === "book-card") {
         bookList[i].remove();
+        i--;
       }
     }
   }, 1500);
@@ -85,4 +87,21 @@ function showButton() {
   setTimeout(() => {
     button.className = "form-submit form-submit--active";
   }, 1000);
+  button.addEventListener("click", () => {
+    let searchStr = makeRecommendArray();
+    bookRecommend.getBookArray(searchStr);
+  });
+}
+
+function makeRecommendArray() {
+  let bookTitles = Array.from(document.querySelectorAll(".title"));
+  searchStr = "";
+  for (let i = 0; i < 3; i++) {
+    if (i == 2) {
+      searchStr += `book:${bookTitles[i].textContent}`;
+    } else {
+      searchStr += `book:${bookTitles[i].textContent},`;
+    }
+  }
+  return searchStr;
 }
