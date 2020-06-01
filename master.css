@@ -6,9 +6,21 @@ body {
 }
 
 .book-input {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
+  grid-template-areas: "book1 book2 book3";
+}
+
+#book1 {
+  grid-area: book1;
+}
+
+#book2 {
+  grid-area: book2;
+}
+
+#book3 {
+  grid-area: book3;
 }
 
 input {
@@ -17,11 +29,17 @@ input {
   border: none;
   border-bottom: 3px maroon solid;
   margin-inline: 100px;
+  transition: 0.5 ease;
 }
 
 input:focus {
   border-bottom: 3px rgb(152, 163, 163) solid;
   transition: 0.5s ease;
+}
+
+.input--validated {
+  border-bottom: 3px rgb(27, 134, 72) solid;
+  transition: all ease 0.5s;
 }
 
 .title {
@@ -57,7 +75,7 @@ input:focus {
   /* padding: 0px; */
   box-shadow: inset 0px 0px 12px 0px rgba(43, 57, 68, 0.47);
   overflow-y: hidden;
-  /* transition: all 0.5s ease; */
+  transition: all 0.9s ease;
 }
 
 .book-card--active {
@@ -92,4 +110,29 @@ input:focus {
 
 .book-card--active > * {
   pointer-events: none;
+}
+
+.form-submit {
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid rgba(177, 204, 211, 1);
+  border-radius: 0.19em;
+  box-sizing: border-box;
+  text-decoration: none;
+  width: 50%;
+  height: 3vw;
+  color: rgba(177, 204, 211, 1);
+  background-color: rgb(43, 57, 68);
+  text-align: center;
+  transition: all 0.2s;
+  opacity: 0%;
+}
+.form-submit--active {
+  opacity: 100%;
+  transition: all 0.2s ease;
+}
+
+.form-submit--active:hover {
+  color: rgb(43, 57, 68);
+  background-color: rgba(177, 204, 211, 1);
 }

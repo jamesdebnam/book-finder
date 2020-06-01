@@ -19,14 +19,14 @@ async function displayBooks(e) {
   for (let i = 0; i < 3; i++) {
     //Create all the necessary elements for each card
     let title = document.createElement("p");
-    title.setAttribute("class", `title title-${i}`);
+    title.className = `title title-${i}`;
     title.innerHTML = bookArray[i].title;
     let author = document.createElement("p");
-    author.setAttribute("class", `author author-${i}`);
+    author.className = `author author-${i}`;
     author.innerHTML = bookArray[i].authors[0];
     let image = document.createElement("img");
     image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
-    image.setAttribute("class", "cover");
+    image.className = "cover";
 
     //Selects the ul element that the cards are going to be appended onto
     let inputParent = document.querySelector(`.book-input__${e.target.id}`);
@@ -39,9 +39,9 @@ async function displayBooks(e) {
     inputParent.appendChild(bookCard);
 
     //Sets attributes twice - this is to get the CSS transition working
-    bookCard.setAttribute("class", "book-card");
+    bookCard.className = "book-card";
     setTimeout(() => {
-      bookCard.setAttribute("class", `book-card--active book-card__book${i}`);
+      bookCard.className = `book-card--active book-card__book${i}`;
     }, 10);
     bookCard.addEventListener("click", selectBook);
   }
@@ -49,10 +49,40 @@ async function displayBooks(e) {
 
 function selectBook(e) {
   let bookList = e.target.parentElement.childNodes;
+  //First sets all the unselected cards as book-card to enable animation
   for (let i = 0; i < bookList.length; i++) {
     if (bookList[i].className !== e.target.className) {
-      bookList[i].remove();
+      bookList[i].className = "book-card";
     }
   }
-  // e.target.setAttribute("class", `book-card--active book-card--selected`);
+  //After 1.5 seconds, the DOM elements get removed
+  setTimeout(() => {
+    for (let i = 0; i < bookList.length; i++) {
+      if (bookList[i].className === "book-card") {
+        bookList[i].remove();
+      }
+    }
+  }, 1500);
+  //Colours the input form a nice green to show you've selected something
+  e.target.parentElement.parentElement.childNodes[1].className =
+    "input--validated";
+
+  if (formsFilledCheck()) showButton();
+}
+
+function formsFilledCheck() {
+  for (item of input) {
+    if (item.className !== "input--validated") return false;
+  }
+  return true;
+}
+
+function showButton() {
+  let button = document.createElement("button");
+  button.className = "form-submit";
+  button.innerHTML = "Find me a book!";
+  document.querySelector("body").appendChild(button);
+  setTimeout(() => {
+    button.className = "form-submit form-submit--active";
+  }, 1000);
 }
