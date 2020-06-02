@@ -100,6 +100,16 @@ input:focus {
   transition: all 0.9s ease;
 }
 
+.book-card--output {
+  width: 25%;
+}
+
+.book-output {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
 .book-card--selected {
   background-color: rgba(177, 204, 211, 1);
 }
@@ -121,7 +131,7 @@ input:focus {
   text-decoration: none;
   width: 50%;
   height: 3vw;
-  color: rgba(177, 204, 211, 1);
+  color: rgb(177, 211, 197);
   background-color: rgb(43, 57, 68);
   text-align: center;
   transition: all 0.2s;
@@ -135,4 +145,39 @@ input:focus {
 .form-submit--active:hover {
   color: rgb(43, 57, 68);
   background-color: rgba(177, 204, 211, 1);
+}
+
+.book-overlay {
+  background-color: rgba(58, 87, 100, 0.9);
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 0%;
+  width: 100%;
+  overflow-x: hidden;
+  transition: 0.5s all ease-out;
+}
+
+.book-overlay--hidden {
+  height: 9%;
+  overflow-y: hidden;
+}
+
+.down-icon {
+  margin: 10px auto;
+  width: 3%;
+  height: auto;
+  background-color: rgba(43, 57, 68, 0.6);
+  border-radius: 50%;
+  transition: ease 0.2s;
+}
+
+.down-icon:hover {
+  cursor: pointer;
+  opacity: 50%;
+  transition: ease 0.2s;
+}
+
+img {
+  max-height: 205px;
 }

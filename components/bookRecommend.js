@@ -11,17 +11,18 @@ async function bookRecommendGet(books) {
       limit: 10,
     },
   });
-  console.log(reply);
+  return reply;
 }
 
 //Takes the first 3 books, and puts all their info into an array
 async function getBookArray(text) {
   let reply = await bookRecommendGet(text);
   let bookArr = [];
-  for (let i = 0; i < 11; i++) {
-    bookArr.push(reply.data.Similar.Results[i].Name);
+  for (let i = 0; i < 10; i++) {
+    if (reply.data.Similar.Results[i])
+      bookArr.push(reply.data.Similar.Results[i].Name);
   }
-  // console.log(bookArr);
+  console.log(bookArr);
   return bookArr;
 }
 

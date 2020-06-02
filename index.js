@@ -2,6 +2,8 @@ const bookPredict = require("./components/bookPredictGet.js");
 const bookRecommend = require("./components/bookRecommend.js");
 // const button = require("./components/button.js")
 const input = document.querySelectorAll("input");
+const overlay = document.querySelector(".book-overlay");
+let overlayHidden = true;
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
 
@@ -26,7 +28,12 @@ async function displayBooks(e) {
     author.className = `author author-${i}`;
     author.innerHTML = bookArray[i].authors[0];
     let image = document.createElement("img");
-    image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
+    if (bookArray[i].imageLinks.thumbnail) {
+      image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
+    } else {
+      image.setAttribute("src", "null");
+      image.setAttribute("alt", "No cover found!");
+    }
     image.className = "cover";
 
     //Selects the ul element that the cards are going to be appended onto
@@ -87,10 +94,7 @@ function showButton() {
   setTimeout(() => {
     button.className = "form-submit form-submit--active";
   }, 1000);
-  button.addEventListener("click", () => {
-    let searchStr = makeRecommendArray();
-    bookRecommend.getBookArray(searchStr);
-  });
+  button.addEventListener("click", displayRecommendations);
 }
 
 function makeRecommendArray() {
@@ -105,3 +109,56 @@ function makeRecommendArray() {
   }
   return searchStr;
 }
+
+async function displayRecommendations() {
+  let searchStr = makeRecommendArray();
+  let bookGetArray = await bookRecommend.getBookArray(searchStr);
+
+  for (let i = 0; i < bookGetArray.length; i++) {
+    let bookResponse = await bookPredict.bookPredictGet(bookGetArray[i]);
+    let bookInfo = bookResponse.data.items[i].volumeInfo;
+
+    let title = document.createElement("p");
+    title.className = `title rec-title-${i}`;
+    title.innerHTML = bookInfo.title;
+    let author = document.createElement("p");
+    author.className = `author rec-author-${i}`;
+    author.innerHTML = bookInfo.authors[0];
+    let image = document.createElement("img");
+
+    //IF NO IMAGE THIS CRASHES
+    if (bookInfo.imageLinks) {
+      image.setAttribute("src", `${bookInfo.imageLinks.thumbnail}`);
+    } else {
+      image.setAttribute("src", "no-cover.png");
+      image.setAttribute("alt", "No cover found!");
+    }
+    image.className = "cover";
+
+    //Selects the ul element that the cards are going to be appended onto
+    let inputParent = document.querySelector(`.book-output`);
+    let bookCard = document.createElement("li");
+    bookCard.className = "book-card--active book-card--output";
+
+    //Appends all the created elements into the li element and fits that into the DOM
+    bookCard.appendChild(title);
+    bookCard.appendChild(author);
+    bookCard.appendChild(image);
+    inputParent.appendChild(bookCard);
+  }
+  overlayHidden = false;
+  overlay.className = "book-overlay book-overlay--active";
+}
+
+let downButton = document.querySelector(".down-icon");
+downButton.addEventListener("click", () => {
+  if (overlayHidden) {
+    downButton.setAttribute("src", "down.svg");
+    overlay.className = "book-overlay book-overlay--active";
+    overlayHidden = false;
+  } else {
+    overlay.className = "book-overlay book-overlay--hidden";
+    downButton.setAttribute("src", "up.svg");
+    overlayHidden = true;
+  }
+});
