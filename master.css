@@ -3,6 +3,7 @@ body {
   text-align: center;
   background-color: rgb(43, 57, 68);
   color: rgb(152, 163, 163);
+  overflow-x: hidden;
 }
 
 .book-input {
@@ -184,4 +185,33 @@ input:focus {
 
 img {
   max-height: 205px;
+}
+
+.book-input__book1--loading {
+  animation: bounce 2s infinite ease-in-out;
+}
+
+.book-input__book2--loading {
+  animation: bounce 2s infinite ease-in-out;
+  animation-delay: 0.5s;
+}
+
+.book-input__book3--loading {
+  animation: bounce 2s infinite ease-in-out;
+  animation-delay: 1s;
+}
+
+@keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0);
+  }
+  33% {
+    -webkit-transform: translate(0, -5px);
+  }
+  66% {
+    -webkit-transform: translate(0, 5px);
+  }
+  100% {
+    -webkit-transform: translate(0, 0px);
+  }
 }

@@ -5,6 +5,7 @@ const input = document.querySelectorAll("input");
 const overlay = document.querySelector(".book-overlay");
 const form = document.querySelectorAll("form");
 let overlayHidden = true;
+let loading = false;
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
 form.forEach((item) =>
@@ -40,18 +41,17 @@ async function displayBooks(e) {
     title.className = `title title-${i}`;
     title.innerHTML = bookArray[i].title;
     let author = document.createElement("p");
-    let author = document.createElement("p");
     author.className = `author author-${i}`;
-    if (bookInfo.authors) {
-      author.innerHTML = bookInfo.authors[0];
+    if (bookArray[i].authors) {
+      author.innerHTML = bookArray[i].authors[0];
     } else {
       author.innerHTML = "Unknown";
     }
     let image = document.createElement("img");
-    if (bookArray[i].imageLinks.thumbnail) {
+    if (bookArray[i].imageLinks) {
       image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
     } else {
-      image.setAttribute("src", "null");
+      image.setAttribute("src", "no-cover.png");
       image.setAttribute("alt", "No cover found!");
     }
     image.className = "cover";
@@ -81,6 +81,10 @@ function selectBook(e) {
   for (let i = 0; i < 3; i++) {
     if (bookList[i].className !== e.target.className) {
       bookList[i].className = "book-card";
+    } else {
+      bookList[
+        i
+      ].className = `book-card book-card--active book-card__book${i} book-card--selected`;
     }
   }
   //After 1.5 seconds, the DOM elements get removed
@@ -109,7 +113,7 @@ function formsFilledCheck() {
 function showButton() {
   setTimeout(
     () => (button.className = "form-submit form-submit--active"),
-    1500
+    2000
   );
   button.addEventListener("click", displayRecommendations);
 }
@@ -128,6 +132,7 @@ function makeRecommendArray() {
 }
 
 async function displayRecommendations() {
+  toggleLoading();
   let searchStr = makeRecommendArray();
   let bookGetArray = await bookRecommend.getBookArray(searchStr);
   let inputParent = document.querySelector(`.book-output`);
@@ -169,6 +174,7 @@ async function displayRecommendations() {
   console.log(inputParent);
   overlayHidden = false;
   overlay.className = "book-overlay book-overlay--active";
+  toggleLoading();
 }
 
 let downButton = document.querySelector(".down-icon");
@@ -183,3 +189,31 @@ downButton.addEventListener("click", () => {
     overlayHidden = true;
   }
 });
+
+function toggleLoading() {
+  let loadingCards = document.querySelectorAll(".book-input__card");
+  if (!loading) {
+    let loadingClasses = [
+      "book-input__book1 book-input__book1--loading",
+      "book-input__book2 book-input__book2--loading",
+      "book-input__book3 book-input__book3--loading",
+    ];
+    for (let i = 0; i < loadingCards.length; i++) {
+      loadingCards[i].className = "book-input__card " + loadingClasses[i];
+    }
+    button.innerHTML = "Finding books...";
+    button.removeEventListener("click", displayRecommendations);
+    loading = true;
+  } else {
+    let staticClasses = [
+      "book-input__book1",
+      "book-input__book2",
+      "book-input__book3",
+    ];
+    for (let i = 0; i < loadingCards.length; i++) {
+      loadingCards[i].className = "book-input__card " + staticClasses[i];
+    }
+    button.innerHTML = "Find me a book!";
+    loading = false;
+  }
+}
