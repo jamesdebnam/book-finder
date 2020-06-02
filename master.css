@@ -158,6 +158,10 @@ input:focus {
   transition: 0.5s all ease-out;
 }
 
+.book-overlay--active {
+  height: 100%;
+}
+
 .book-overlay--hidden {
   height: 9%;
   overflow-y: hidden;

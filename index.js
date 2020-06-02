@@ -1,14 +1,29 @@
 const bookPredict = require("./components/bookPredictGet.js");
 const bookRecommend = require("./components/bookRecommend.js");
-// const button = require("./components/button.js")
+const button = document.querySelector("button");
 const input = document.querySelectorAll("input");
 const overlay = document.querySelector(".book-overlay");
+const form = document.querySelectorAll("form");
 let overlayHidden = true;
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
+form.forEach((item) =>
+  item.addEventListener("onSubmit", (e) => {
+    e.preventDefault();
+  })
+);
 
 async function displayBooks(e) {
   //Grabs info from google books API
+  overlay.className = "book-overlay";
+  button.className = "form-submit";
+  let outputBooks = document.querySelector(".book-output");
+  if (outputBooks.childElementCount > 0) {
+    let outputList = outputBooks.childNodes;
+    for (let i = 0; i < outputList.length; i++) {
+      outputList[i].remove();
+    }
+  }
   let bookArray = await bookPredict.getBookArray(e.target.value);
   let displayedBooks = Array.from(
     document.querySelector(`.book-input__${e.target.id}`).children
@@ -25,8 +40,13 @@ async function displayBooks(e) {
     title.className = `title title-${i}`;
     title.innerHTML = bookArray[i].title;
     let author = document.createElement("p");
+    let author = document.createElement("p");
     author.className = `author author-${i}`;
-    author.innerHTML = bookArray[i].authors[0];
+    if (bookInfo.authors) {
+      author.innerHTML = bookInfo.authors[0];
+    } else {
+      author.innerHTML = "Unknown";
+    }
     let image = document.createElement("img");
     if (bookArray[i].imageLinks.thumbnail) {
       image.setAttribute("src", `${bookArray[i].imageLinks.thumbnail}`);
@@ -87,13 +107,10 @@ function formsFilledCheck() {
 }
 
 function showButton() {
-  let button = document.createElement("button");
-  button.className = "form-submit";
-  button.innerHTML = "Find me a book!";
-  document.querySelector("body").appendChild(button);
-  setTimeout(() => {
-    button.className = "form-submit form-submit--active";
-  }, 1000);
+  setTimeout(
+    () => (button.className = "form-submit form-submit--active"),
+    1500
+  );
   button.addEventListener("click", displayRecommendations);
 }
 
@@ -113,6 +130,7 @@ function makeRecommendArray() {
 async function displayRecommendations() {
   let searchStr = makeRecommendArray();
   let bookGetArray = await bookRecommend.getBookArray(searchStr);
+  let inputParent = document.querySelector(`.book-output`);
 
   for (let i = 0; i < bookGetArray.length; i++) {
     let bookResponse = await bookPredict.bookPredictGet(bookGetArray[i]);
@@ -123,10 +141,13 @@ async function displayRecommendations() {
     title.innerHTML = bookInfo.title;
     let author = document.createElement("p");
     author.className = `author rec-author-${i}`;
-    author.innerHTML = bookInfo.authors[0];
+    if (bookInfo.authors) {
+      author.innerHTML = bookInfo.authors[0];
+    } else {
+      author.innerHTML = "Unknown";
+    }
     let image = document.createElement("img");
 
-    //IF NO IMAGE THIS CRASHES
     if (bookInfo.imageLinks) {
       image.setAttribute("src", `${bookInfo.imageLinks.thumbnail}`);
     } else {
@@ -136,7 +157,6 @@ async function displayRecommendations() {
     image.className = "cover";
 
     //Selects the ul element that the cards are going to be appended onto
-    let inputParent = document.querySelector(`.book-output`);
     let bookCard = document.createElement("li");
     bookCard.className = "book-card--active book-card--output";
 
@@ -146,6 +166,7 @@ async function displayRecommendations() {
     bookCard.appendChild(image);
     inputParent.appendChild(bookCard);
   }
+  console.log(inputParent);
   overlayHidden = false;
   overlay.className = "book-overlay book-overlay--active";
 }
