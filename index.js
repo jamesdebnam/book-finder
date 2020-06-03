@@ -3,16 +3,33 @@ const bookRecommend = require("./components/bookRecommend.js");
 const button = document.querySelector("button");
 const input = document.querySelectorAll("input");
 const overlay = document.querySelector(".book-overlay");
-const form = document.querySelectorAll("form");
 let overlayHidden = true;
 let loading = false;
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
-form.forEach((item) =>
-  item.addEventListener("onSubmit", (e) => {
-    e.preventDefault();
-  })
-);
+for (let i = 0; i < input.length; i++) {
+  input[i].addEventListener("keydown", (e) => {
+    if (e.key == "Enter") {
+      e.preventDefault();
+      tabFocus();
+    }
+  });
+}
+
+function tabFocus() {
+  let id = document.activeElement.id;
+  switch (id) {
+    case "book1":
+      input[2].focus();
+      break;
+    case "book2":
+      input[0].focus();
+      break;
+    case "book3":
+      input[1].focus();
+      break;
+  }
+}
 
 async function displayBooks(e) {
   //Grabs info from google books API
