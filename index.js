@@ -22,13 +22,13 @@ function tabFocus() {
   let id = document.activeElement.id;
   switch (id) {
     case "book1":
-      input[2].focus();
+      input[1].focus();
       break;
     case "book2":
-      input[0].focus();
+      input[2].focus();
       break;
     case "book3":
-      input[1].focus();
+      input[0].focus();
       break;
   }
 }
@@ -170,7 +170,7 @@ async function displayRecommendations() {
     //Google API request
     let bookResponse = await bookPredict.bookPredictGet(bookGetArray[i]);
     let bookInfo = bookResponse.data.items[i].volumeInfo;
-
+    let link = linkify(bookInfo.title);
     let title = document.createElement("p");
     title.className = `title rec-title-${i}`;
     title.innerHTML = `<b>${bookInfo.title}</b>`;
@@ -200,6 +200,9 @@ async function displayRecommendations() {
     bookCard.appendChild(author);
     bookCard.appendChild(image);
     inputParent.appendChild(bookCard);
+    bookCard.addEventListener("click", () => {
+      window.location.href = `https://www.amazon.co.uk/s?k=${link}`;
+    });
     noBooks = false;
   }
   if (noBooks) {
@@ -254,4 +257,8 @@ function toggleLoading() {
     button.innerHTML = "Find me a book!";
     loading = false;
   }
+}
+
+function linkify(title) {
+  return title.split(" ").join("+");
 }

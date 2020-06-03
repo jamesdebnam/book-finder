@@ -3,14 +3,17 @@ const APIKEY = require("./APIKEY.js");
 
 //Submits a GET request to tastedive API, to give back recommended books from search term
 async function bookRecommendGet(books) {
-  let reply = await axios.get("https://tastedive.com/api/similar", {
-    params: {
-      q: books,
-      k: APIKEY.APIKEY,
-      type: "books",
-      limit: 10,
-    },
-  });
+  let reply = await axios.get(
+    "https://cors-anywhere.herokuapp.com/https://tastedive.com/api/similar",
+    {
+      params: {
+        q: books,
+        k: APIKEY.APIKEY,
+        type: "books",
+        limit: 10,
+      },
+    }
+  );
   return reply;
 }
 

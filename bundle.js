@@ -36,14 +36,17 @@ const APIKEY = require("./APIKEY.js");
 
 //Submits a GET request to tastedive API, to give back recommended books from search term
 async function bookRecommendGet(books) {
-  let reply = await axios.get("https://cors-anywhere.herokuapp.com/https://tastedive.com/api/similar", {
-    params: {
-      q: books,
-      k: APIKEY.APIKEY,
-      type: "books",
-      limit: 10,
-    },
-  });
+  let reply = await axios.get(
+    "https://cors-anywhere.herokuapp.com/https://tastedive.com/api/similar",
+    {
+      params: {
+        q: books,
+        k: APIKEY.APIKEY,
+        type: "books",
+        limit: 10,
+      },
+    }
+  );
   return reply;
 }
 
@@ -235,7 +238,7 @@ async function displayRecommendations() {
     //Google API request
     let bookResponse = await bookPredict.bookPredictGet(bookGetArray[i]);
     let bookInfo = bookResponse.data.items[i].volumeInfo;
-
+    let link = linkify(bookInfo.title);
     let title = document.createElement("p");
     title.className = `title rec-title-${i}`;
     title.innerHTML = `<b>${bookInfo.title}</b>`;
@@ -265,6 +268,9 @@ async function displayRecommendations() {
     bookCard.appendChild(author);
     bookCard.appendChild(image);
     inputParent.appendChild(bookCard);
+    bookCard.addEventListener("click", () => {
+      window.location.href = `https://www.amazon.co.uk/s?k=${link}`;
+    });
     noBooks = false;
   }
   if (noBooks) {
@@ -319,6 +325,10 @@ function toggleLoading() {
     button.innerHTML = "Find me a book!";
     loading = false;
   }
+}
+
+function linkify(title) {
+  return title.split(" ").join("+");
 }
 
 },{"./components/bookPredictGet.js":2,"./components/bookRecommend.js":3}],5:[function(require,module,exports){
