@@ -14,14 +14,29 @@ body {
 
 #book1 {
   grid-area: book1;
+  justify-self: center;
 }
 
 #book2 {
   grid-area: book2;
+  justify-self: center;
 }
 
 #book3 {
   grid-area: book3;
+  justify-self: center;
+}
+
+@media only screen and (max-width: 820px) {
+  .book-input {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  input {
+    margin-inline: 100px;
+  }
 }
 
 input {
@@ -29,7 +44,6 @@ input {
   background-color: inherit;
   border: none;
   border-bottom: 3px maroon solid;
-  margin-inline: 100px;
   transition: 0.5 ease;
 }
 
