@@ -11,6 +11,7 @@ async function bookPredictGet(text) {
   let reply = await axios.get("https://www.googleapis.com/books/v1/volumes", {
     params: {
       q: text,
+      filter: "paid-ebooks",
     },
   });
   return reply;
