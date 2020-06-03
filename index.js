@@ -7,6 +7,8 @@ let overlayHidden = true;
 let loading = false;
 
 input.forEach((item) => item.addEventListener("change", displayBooks));
+
+//Changes enter to a tab function
 for (let i = 0; i < input.length; i++) {
   input[i].addEventListener("keydown", (e) => {
     if (e.key == "Enter") {
@@ -32,13 +34,20 @@ function tabFocus() {
 }
 
 async function displayBooks(e) {
+  //Resets button on change
+  if (button.className === "form-submit form-submit--active") {
+    button.removeEventListener("click", displayRecommendations);
+    button.className = "form-submit";
+  }
   //Grabs info from google books API
   overlay.className = "book-overlay";
   button.className = "form-submit";
+
+  //Removes all recommended books
   let outputBooks = document.querySelector(".book-output");
   if (outputBooks.childElementCount > 0) {
     let outputList = outputBooks.childNodes;
-    for (let i = 0; i < outputList.length; i++) {
+    for (let i = outputList.length - 1; i >= 0; i--) {
       outputList[i].remove();
     }
   }
@@ -56,11 +65,11 @@ async function displayBooks(e) {
     //Create all the necessary elements for each card
     let title = document.createElement("p");
     title.className = `title title-${i}`;
-    title.innerHTML = bookArray[i].title;
+    title.innerHTML = `<b>${bookArray[i].title}</b>`;
     let author = document.createElement("p");
     author.className = `author author-${i}`;
     if (bookArray[i].authors) {
-      author.innerHTML = bookArray[i].authors[0];
+      author.innerHTML = `<i>${bookArray[i].authors[0]}</i>`;
     } else {
       author.innerHTML = "Unknown";
     }
@@ -112,7 +121,7 @@ function selectBook(e) {
         i--;
       }
     }
-  }, 1500);
+  }, 1000);
   //Colours the input form a nice green to show you've selected something
   e.target.parentElement.parentElement.childNodes[1].className =
     "input--validated";
@@ -130,11 +139,12 @@ function formsFilledCheck() {
 function showButton() {
   setTimeout(
     () => (button.className = "form-submit form-submit--active"),
-    2000
+    1600
   );
   button.addEventListener("click", displayRecommendations);
 }
 
+//This grabs the books and puts them into the proper format for tastedive API
 function makeRecommendArray() {
   let bookTitles = Array.from(document.querySelectorAll(".title"));
   searchStr = "";
@@ -150,21 +160,24 @@ function makeRecommendArray() {
 
 async function displayRecommendations() {
   toggleLoading();
+  let noBooks = true;
   let searchStr = makeRecommendArray();
+  //Tastedive request
   let bookGetArray = await bookRecommend.getBookArray(searchStr);
   let inputParent = document.querySelector(`.book-output`);
 
   for (let i = 0; i < bookGetArray.length; i++) {
+    //Google API request
     let bookResponse = await bookPredict.bookPredictGet(bookGetArray[i]);
     let bookInfo = bookResponse.data.items[i].volumeInfo;
 
     let title = document.createElement("p");
     title.className = `title rec-title-${i}`;
-    title.innerHTML = bookInfo.title;
+    title.innerHTML = `<b>${bookInfo.title}</b>`;
     let author = document.createElement("p");
     author.className = `author rec-author-${i}`;
     if (bookInfo.authors) {
-      author.innerHTML = bookInfo.authors[0];
+      author.innerHTML = `<i>${bookInfo.authors[0]}</i>`;
     } else {
       author.innerHTML = "Unknown";
     }
@@ -187,13 +200,20 @@ async function displayRecommendations() {
     bookCard.appendChild(author);
     bookCard.appendChild(image);
     inputParent.appendChild(bookCard);
+    noBooks = false;
+  }
+  if (noBooks) {
+    let sorry = document.createElement("h1");
+    sorry.innerHTML =
+      "Sorry, I couldn't find any books! Try again with more mainstream books perhaps...";
+    inputParent.appendChild(sorry);
   }
   console.log(inputParent);
   overlayHidden = false;
   overlay.className = "book-overlay book-overlay--active";
   toggleLoading();
 }
-
+//Toggles the overlay going up or down
 let downButton = document.querySelector(".down-icon");
 downButton.addEventListener("click", () => {
   if (overlayHidden) {
@@ -207,8 +227,10 @@ downButton.addEventListener("click", () => {
   }
 });
 
+//Toggles the little loading animation on the cards
 function toggleLoading() {
   let loadingCards = document.querySelectorAll(".book-input__card");
+  button.removeEventListener("click", displayRecommendations);
   if (!loading) {
     let loadingClasses = [
       "book-input__book1 book-input__book1--loading",
@@ -219,7 +241,6 @@ function toggleLoading() {
       loadingCards[i].className = "book-input__card " + loadingClasses[i];
     }
     button.innerHTML = "Finding books...";
-    button.removeEventListener("click", displayRecommendations);
     loading = true;
   } else {
     let staticClasses = [

@@ -58,15 +58,17 @@ input:focus {
 }
 
 .title {
-  font-size: 1.5em;
+  font-size: 1.1em;
   grid-area: title;
-  padding-right: 10px;
+  padding-inline: 10px;
 }
 
 .author {
   grid-area: author;
-  padding-right: 10px;
+  font-size: 0.8em;
+  padding-inline: 10px;
 }
+
 .cover {
   grid-area: image;
   box-shadow: 0px 0px 24px -6px rgba(43, 57, 68, 0.47);
@@ -75,10 +77,9 @@ input:focus {
 .book-card {
   border-radius: 2%;
   color: rgb(43, 57, 68);
-  width: 70%;
+  width: 80%;
   height: 0px;
   background-color: rgba(177, 204, 211, 0.534);
-  margin: 10px auto;
   display: grid;
   grid-template-rows: 70% 30%;
   grid-template-columns: 50% 50%;
@@ -90,16 +91,16 @@ input:focus {
   /* padding: 0px; */
   box-shadow: inset 0px 0px 12px 0px rgba(43, 57, 68, 0.47);
   overflow-y: hidden;
-  transition: all 0.9s ease;
+  transition: all 0.8s ease;
 }
 
 .book-card--active {
   border-radius: 2%;
   color: rgb(43, 57, 68);
-  width: 70%;
+  width: 80%;
   height: 200px;
   background-color: rgba(177, 204, 211, 0.534);
-  margin: 10px auto;
+  margin-top: 15px;
 
   display: grid;
   grid-template-rows: 70% 30%;
@@ -112,7 +113,7 @@ input:focus {
   padding: 10px;
   box-shadow: inset 0px 0px 12px 0px rgba(43, 57, 68, 0.47);
   overflow-y: hidden;
-  transition: all 0.9s ease;
+  transition: all 0.8s ease;
 }
 
 .book-card--output {
@@ -123,6 +124,7 @@ input:focus {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  padding: 0;
 }
 
 .book-card--selected {
