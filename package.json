@@ -2,11 +2,14 @@
   "name": "bookfinderproj",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "12.18.0"
+  },
   "main": "index.js",
   "scripts": {
     "test": "node ./tests/test.js",
-    "build": "browserify index.js -o bundle.js",
-    "start": "node bundle.js",
+    "build": "browserify index.js",
+    "start": "node index.js",
     "heroku-prebuild": "npm run build"
   },
   "repository": {
