@@ -37,8 +37,26 @@ body {
   input {
     margin-inline: 100px;
   }
-}
 
+  button.form-submit--active {
+    height: 80px;
+  }
+  .book-card--output.book-card--active {
+    width: 80vw;
+  }
+  .down-icon.down-icon {
+    width: 15vw;
+  }
+  .book-overlay.book-overlay {
+    position: sticky;
+
+    margin: -20px -20px -20px -20px;
+    padding: 10px;
+  }
+  .book-overlay--hidden.book-overlay--hidden {
+    height: 12%;
+  }
+}
 input {
   color: inherit;
   background-color: inherit;
